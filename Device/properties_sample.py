@@ -14,11 +14,12 @@ from IoT_device.request.services_properties import ServicesProperties
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 def run():
     # 客户端配置
-    client_cfg = IoTClientConfig(server_ip='iot-mqtts.cn-north-4.myhuaweicloud.com',
-                                 device_id='5ebac693352cfb02c567ec88_abcdefg1234',
-                                 secret='yourSecret', is_ssl=True)
+    client_cfg = IoTClientConfig(server_ip='fcd87681b6.iot-mqtts.cn-north-4.myhuaweicloud.com',
+                                 device_id='62e53b313a88483559860df8_zza_device_1',
+                                 secret='67184002', is_ssl=True)
 
     # 创建设备
     iot_client = IotClient(client_cfg)
