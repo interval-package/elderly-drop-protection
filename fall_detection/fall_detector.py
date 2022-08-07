@@ -101,7 +101,6 @@ class FallDetector:
 
         openpifpaf.decoder.configure(args)
         openpifpaf.network.Factory.configure(args)
-        
 
         return args
 
@@ -171,7 +170,6 @@ class FallDetector:
         print('Exiting...')
         # print(self.get_statement())
         return
-
 
     def get_statement(self):
         """

@@ -5,7 +5,7 @@
 import json
 import logging
 
-from Device.IoT_device.request import ServicesProperties
+from Device_IOT.IoT_device.request import ServicesProperties
 from IoT_device.client.IoT_client_config import IoTClientConfig
 from IoT_device.client.IoT_client import IotClient
 
