@@ -1,0 +1,6 @@
+__pycache__/
+keypoints.csv
+Fall_Detection_Documents/
+.vscode/
+*.mp4
+
