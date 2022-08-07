@@ -60,6 +60,7 @@ def run():
     # 定时上报属性
     while True:
         # 按照产品模型设置属性
+        print(time.asctime())
         service_property = ServicesProperties()
         service_property.add_service_property(service_id="Battery", property='batteryLevel', value=1)
         service_property.add_service_property(service_id="Battery", property='batteryThreshold', value=2)
@@ -68,6 +69,7 @@ def run():
         service_property.add_service_property(service_id="WaterMeter", property='temperature', value=90)
         iot_client.report_properties(service_properties=service_property.service_property, qos=1)
         time.sleep(10)
+
 
 if __name__ == '__main__':
     run()
