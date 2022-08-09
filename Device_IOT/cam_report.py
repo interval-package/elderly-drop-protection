@@ -33,7 +33,7 @@ class cam_report(object):
         # 创建设备
         self.iot_client = IotClient(self.client_cfg)
         self.iot_client.connect()
-        # 自定义callback
+        obj.iot_client.start()
 
     def property_set_callback(self, request_id, payload):
         # 遍历services
@@ -102,7 +102,7 @@ class cam_report(object):
         self.iot_client.publish_message('raw message: Hello Huawei cloud IoT')
         pass
 
-    def reporting_property(self):
+    def reporting_property(self, pal_param=1):
         # 设置平台设置设备属性的回调
         self.iot_client.set_property_set_callback(self.property_set_callback)
         # 设置平台查询设备属性的回调
@@ -112,7 +112,8 @@ class cam_report(object):
         while True:
             print(time.asctime())
             service_property = ServicesProperties()
-            service_property.add_service_property(service_id="fall_detection", property='fall_detect_type', value=1)
+            service_property.add_service_property(service_id="fall_detection", property='fall_detect_type',
+                                                  value=pal_param)
             self.iot_client.report_properties(service_properties=service_property.service_property, qos=1)
             time.sleep(10)
         pass
@@ -120,5 +121,5 @@ class cam_report(object):
 
 if __name__ == '__main__':
     obj = cam_report()
-    obj.iot_client.start()
+
     obj.reporting_property()

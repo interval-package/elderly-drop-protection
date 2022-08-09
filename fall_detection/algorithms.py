@@ -371,7 +371,8 @@ def alg2_sequential(queues, argss, consecutive_frames, event, counter):
             # for ip_set, feature_plotter in zip(ip_sets, feature_plotters):
             #     for cnt in range(len(FEATURE_LIST)):
             #         plt_f = FEATURE_LIST[cnt]
-            #         if ip_set and ip_set[0] is not None and ip_set[0][-1] is not None and plt_f in ip_set[0][-1]["features"]:
+            #         if ip_set and ip_set[0] is not None and ip_set[0][-1] is not None
+            #         and plt_f in ip_set[0][-1]["features"]:
             #             # print(ip_set[0][-1]["features"])
             #             feature_plotter[cnt].append(ip_set[0][-1]["features"][plt_f])
             #
