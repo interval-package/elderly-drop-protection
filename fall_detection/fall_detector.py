@@ -7,8 +7,10 @@ import copy
 import logging
 import torch.multiprocessing as mp
 import csv
-from default_params import *
-from algorithms import *
+
+from .default_params import *
+from .algorithms import *
+
 import threading
 
 try:
@@ -22,12 +24,12 @@ class FallDetector:
         通过多线程(进程)的方式对目标进行识别
     """
 
-    def __init__(self, vis_info='integrate', t=DEFAULT_CONSEC_FRAMES):
+    def __init__(self, vis_info='integrate', t_type=DEFAULT_CONSEC_FRAMES):
         """
             parm vis_info:  视频流的URL地址，可填入文件路径、RTSP推流
                             默认vis_info='integrate'，调用系统内置摄像头
         """
-        self.consecutive_frames = t
+        self.consecutive_frames = t_type
         self.args = self.cli()
         self.vis_info = vis_info
         # 共享内存变量，实现进程通信

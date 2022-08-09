@@ -1,7 +1,6 @@
 if __name__ == "__main__":
     import fall_detector
     import sys
-    import csv
     import os
     import joblib
     import time

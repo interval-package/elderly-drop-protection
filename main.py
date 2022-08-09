@@ -2,7 +2,7 @@ import threading
 import time
 
 from Device_IOT.cam_report import cam_report
-from fall_detection.fall_detector import FallDetector
+from fall_detection import FallDetector
 
 
 def main():

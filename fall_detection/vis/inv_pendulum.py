@@ -1,7 +1,7 @@
 from .visual import CocoPart
 import numpy as np
-from helpers import *
-from default_params import *
+from ..helpers import *
+from ..default_params import *
 
 
 def match_ip(ip_set, new_ips, lstm_set, num_matched, consecutive_frames=DEFAULT_CONSEC_FRAMES):
