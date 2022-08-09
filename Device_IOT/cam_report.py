@@ -1,13 +1,14 @@
 # -*- encoding: utf-8 -*-
-'''
-平台下发命令 demo
-'''
 import json
 import logging
+import time
 
 from Device_IOT.IoT_device.request import ServicesProperties
 from IoT_device.client.IoT_client_config import IoTClientConfig
 from IoT_device.client.IoT_client import IotClient
+
+from report_utils import load_device_info
+from settings import server_ip
 
 # 日志设置
 logging.basicConfig(level=logging.INFO)
@@ -18,15 +19,20 @@ class cam_report(object):
 
     def __init__(self, client_cfg=None):
         # 客户端配置
+
+        device_info = load_device_info()
+
+        print(server_ip, device_info)
+
         if client_cfg is None:
-            self.client_cfg = IoTClientConfig(server_ip='iot-mqtts.cn-north-4.myhuaweicloud.com',
-                                         device_id='5e85a55f60b7b804c51ce15c_py123',
-                                         secret='123456789', is_ssl=True)
+            self.client_cfg = IoTClientConfig(server_ip=server_ip,
+                                              device_id=device_info["device_id"],
+                                              secret="12345678", is_ssl=True)
         else:
             self.client_cfg = client_cfg
         # 创建设备
         self.iot_client = IotClient(self.client_cfg)
-
+        self.iot_client.connect()
         # 自定义callback
 
     def property_set_callback(self, request_id, payload):
@@ -90,12 +96,29 @@ class cam_report(object):
 
         # 发送自定义topic消息
         self.iot_client.publish_message(r'$oc/devices/' + str(self.client_cfg.device_id) + r'/user/wpy/up',
-                                   'Hello Huawei cloud IoT')
+                                        'Hello Huawei cloud IoT')
 
         # 设备向平台发送消息，系统默认topic
         self.iot_client.publish_message('raw message: Hello Huawei cloud IoT')
+        pass
+
+    def reporting_property(self):
+        # 设置平台设置设备属性的回调
+        self.iot_client.set_property_set_callback(self.property_set_callback)
+        # 设置平台查询设备属性的回调
+        self.iot_client.set_property_get_callback(self.property_get_callback)
+
+        # 按照产品模型设置属性
+        while True:
+            print(time.asctime())
+            service_property = ServicesProperties()
+            service_property.add_service_property(service_id="fall_detection", property='fall_detect_type', value=1)
+            self.iot_client.report_properties(service_properties=service_property.service_property, qos=1)
+            time.sleep(10)
+        pass
 
 
 if __name__ == '__main__':
     obj = cam_report()
-    obj.run_default()
+    obj.iot_client.start()
+    obj.reporting_property()

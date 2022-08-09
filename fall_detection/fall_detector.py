@@ -142,9 +142,10 @@ class FallDetector:
                     argss[1].video = ''.join(vid_name[:-1])+'2.'+vid_name[-1]
                     print('Video 1:', argss[0].video)
                     print('Video 2:', argss[1].video)
-                except Exception as exep:
+                except Exception as ex:
                     print('Error: argument --video not properly set')
-                    print('For 2 video fall detection(--num_cams=2), save your videos as abc1.xyz & abc2.xyz and set --video=abc.xyz')
+                    print('For 2 video fall detection(--num_cams=2), save your videos as abc1.xyz & abc2.xyz and set '
+                          '--video=abc.xyz')
                     return
             process1_1 = mp.Process(target=extract_keypoints_parallel,
                                     args=(queues[0], argss[0], counter1, counter2, self.consecutive_frames, e))
