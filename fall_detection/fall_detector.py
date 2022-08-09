@@ -9,10 +9,6 @@ import torch.multiprocessing as mp
 import csv
 from default_params import *
 from algorithms import *
-from helpers import last_ip
-import os
-import matplotlib.pyplot as plt
-from vis.visual import activity_dict
 import threading
 
 try:
@@ -176,7 +172,12 @@ class FallDetector:
         """
             获取人体姿态的状态
         """
-        return activity_dict[self.stat_counter.value]
+        return self.stat_counter.value
+
+    def th_start(self):
+        th = threading.Thread(target=self.begin)
+        th.start()
+
 
 
 # 运行demo

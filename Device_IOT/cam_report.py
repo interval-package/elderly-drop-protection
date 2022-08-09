@@ -3,12 +3,20 @@ import json
 import logging
 import time
 
-from Device_IOT.IoT_device.request import ServicesProperties
-from IoT_device.client.IoT_client_config import IoTClientConfig
-from IoT_device.client.IoT_client import IotClient
+try:
+    from IoT_device.request import ServicesProperties
+    from IoT_device.client.IoT_client_config import IoTClientConfig
+    from IoT_device.client.IoT_client import IotClient
+    from report_utils import load_device_info
+    from settings import server_ip
+except ModuleNotFoundError:
 
-from report_utils import load_device_info
-from settings import server_ip
+    from Device_IOT.IoT_device.request import ServicesProperties
+    from Device_IOT.IoT_device.client.IoT_client_config import IoTClientConfig
+    from Device_IOT.IoT_device.client.IoT_client import IotClient
+    from Device_IOT.report_utils import load_device_info
+    from Device_IOT.settings import server_ip
+    pass
 
 # 日志设置
 logging.basicConfig(level=logging.INFO)
@@ -16,6 +24,8 @@ logger = logging.getLogger(__name__)
 
 
 class cam_report(object):
+
+    pal_param = -1
 
     def __init__(self, client_cfg=None):
         # 客户端配置
@@ -26,14 +36,14 @@ class cam_report(object):
 
         if client_cfg is None:
             self.client_cfg = IoTClientConfig(server_ip=server_ip,
-                                              device_id=device_info["device_id"],
+                                              device_id="test_0001",
                                               secret="12345678", is_ssl=True)
         else:
             self.client_cfg = client_cfg
         # 创建设备
         self.iot_client = IotClient(self.client_cfg)
         self.iot_client.connect()
-        obj.iot_client.start()
+        self.iot_client.start()
 
     def property_set_callback(self, request_id, payload):
         # 遍历services
@@ -102,7 +112,7 @@ class cam_report(object):
         self.iot_client.publish_message('raw message: Hello Huawei cloud IoT')
         pass
 
-    def reporting_property(self, pal_param=1):
+    def reporting_property(self):
         # 设置平台设置设备属性的回调
         self.iot_client.set_property_set_callback(self.property_set_callback)
         # 设置平台查询设备属性的回调
@@ -113,7 +123,7 @@ class cam_report(object):
             print(time.asctime())
             service_property = ServicesProperties()
             service_property.add_service_property(service_id="fall_detection", property='fall_detect_type',
-                                                  value=pal_param)
+                                                  value=self.pal_param)
             self.iot_client.report_properties(service_properties=service_property.service_property, qos=1)
             time.sleep(10)
         pass

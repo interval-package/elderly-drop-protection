@@ -74,7 +74,7 @@ def extract_keypoints_parallel(queue, args, self_counter, other_counter, consecu
     frame = 0
     fps = 0
     t0 = time.time()
-    while not event.is_set():
+    while True:
         # print(args.video,self_counter.value,other_counter.value,sep=" ")
         if args.num_cams == 2 and (self_counter.value > other_counter.value):
             continue

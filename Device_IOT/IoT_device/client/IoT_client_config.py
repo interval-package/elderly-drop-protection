@@ -1,7 +1,9 @@
 # -*- encoding: utf-8 -*-
 
-from IoT_device.utils.IoT_util import str_is_empty
-
+try:
+    from IoT_device.utils.IoT_util import str_is_empty
+except ImportError:
+    from Device_IOT.IoT_device.utils.IoT_util import str_is_empty
 
 class IoTClientConfig:
     def __init__(self, server_ip='', device_id='', secret='', is_ssl=False):

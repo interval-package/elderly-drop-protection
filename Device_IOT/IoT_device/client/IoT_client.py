@@ -8,10 +8,15 @@ import random
 import time
 import paho.mqtt.client as mqtt
 import math
-from IoT_device.utils import get_password, get_client_id
-from IoT_device.utils import get_request_id_from_msg, get_device_id_from_msg
-from IoT_device.request import Command, DeviceMessage
-
+try:
+    from IoT_device.utils import get_password, get_client_id
+    from IoT_device.utils import get_request_id_from_msg, get_device_id_from_msg
+    from IoT_device.request import Command, DeviceMessage
+except ModuleNotFoundError:
+    from Device_IOT.IoT_device.utils import get_password, get_client_id
+    from Device_IOT.IoT_device.utils import get_request_id_from_msg, get_device_id_from_msg
+    from Device_IOT.IoT_device.request import Command, DeviceMessage
+    pass
 # 当前文件的祖父目录
 GRAND_PATH = os.path.abspath(os.path.dirname(__file__) + os.path.sep + '..')
 
