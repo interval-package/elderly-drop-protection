@@ -5,15 +5,26 @@ import base64
 import time
 import numpy as np
 import matplotlib.pyplot as plt
-from .vis.visual import write_on_image, visualise, activity_dict, visualise_tracking
-from .vis.processor import Processor
-from .helpers import pop_and_add, last_ip, dist, move_figure, get_hist
-from .default_params import *
-from .vis.inv_pendulum import *
+
+try:
+    from .vis.visual import write_on_image, visualise, activity_dict, visualise_tracking
+    from .vis.processor import Processor
+    from .helpers import pop_and_add, last_ip, dist, move_figure, get_hist
+    from .default_params import *
+    from .vis.inv_pendulum import *
+    from .model.model import LSTMModel
+except ImportError:
+    from vis.visual import write_on_image, visualise, activity_dict, visualise_tracking
+    from vis.processor import Processor
+    from helpers import pop_and_add, last_ip, dist, move_figure, get_hist
+    from default_params import *
+    from vis.inv_pendulum import *
+    from model.model import LSTMModel
+
 import re
 import pandas as pd
 from scipy.signal import savgol_filter, lfilter
-from .model.model import LSTMModel
+
 import torch
 import math
 

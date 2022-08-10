@@ -8,8 +8,12 @@ import logging
 import torch.multiprocessing as mp
 import csv
 
-from .default_params import *
-from .algorithms import *
+try:
+    from .default_params import *
+    from .algorithms import *
+except ImportError:
+    from default_params import *
+    from algorithms import *
 
 import threading
 
@@ -33,7 +37,7 @@ class FallDetector:
         self.args = self.cli()
         self.vis_info = vis_info
         # 共享内存变量，实现进程通信
-        self.stat_counter = mp.Value('i', -1)   
+        self.stat_counter = mp.Value('i', -1)
 
     def cli(self):
         """
@@ -120,12 +124,13 @@ class FallDetector:
             if self.args.video is None:
                 argss[0].video = 0
             process1 = mp.Process(target=extract_keypoints_parallel,
-                                  args=(queues[0], argss[0], counter1, counter2, self.consecutive_frames, e, self.vis_info))
+                                  args=(
+                                  queues[0], argss[0], counter1, counter2, self.consecutive_frames, e, self.vis_info))
             process1.start()
             if self.args.coco_points:
                 process1.join()
             else:
-                process2 = mp.Process(target=alg2_sequential, args=(queues, argss, 
+                process2 = mp.Process(target=alg2_sequential, args=(queues, argss,
                                                                     self.consecutive_frames, e, self.stat_counter))
                 process2.start()
             process1.join()
@@ -136,8 +141,8 @@ class FallDetector:
             else:
                 try:
                     vid_name = self.args.video.split('.')
-                    argss[0].video = ''.join(vid_name[:-1])+'1.'+vid_name[-1]
-                    argss[1].video = ''.join(vid_name[:-1])+'2.'+vid_name[-1]
+                    argss[0].video = ''.join(vid_name[:-1]) + '1.' + vid_name[-1]
+                    argss[1].video = ''.join(vid_name[:-1]) + '2.' + vid_name[-1]
                     print('Video 1:', argss[0].video)
                     print('Video 2:', argss[1].video)
                 except Exception as ex:
@@ -174,12 +179,11 @@ class FallDetector:
         """
             获取人体姿态的状态
         """
-        return self.stat_counter.value
+        return activity_dict[self.stat_counter.value]
 
     def th_start(self):
         th = threading.Thread(target=self.begin)
         th.start()
-
 
 
 # 运行demo
@@ -190,7 +194,7 @@ if __name__ == "__main__":
     while True:
         try:
             print('检测状态:', f.get_statement())
-        except Exception :
+        except Exception:
             print('undetected')
         time.sleep(1)
         if not t.is_alive():

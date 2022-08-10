@@ -120,7 +120,7 @@ class cam_report(object):
 
         # 按照产品模型设置属性
         while True:
-            print(time.asctime())
+            print(time.asctime()+"now property is "+str(self.pal_param))
             service_property = ServicesProperties()
             service_property.add_service_property(service_id="fall_detection", property='fall_detect_type',
                                                   value=self.pal_param)

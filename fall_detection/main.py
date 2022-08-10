@@ -1,15 +1,13 @@
 import threading
 import time
 
-import logging
-
 from Device_IOT.cam_report import cam_report
-from fall_detection import FallDetector
+from fall_detector import FallDetector
 
 
 def main():
     iot_dev = cam_report()
-    fall_dev = FallDetector()
+    fall_dev = FallDetector(vis_info='integrate')
 
     th_1 = threading.Thread(target=fall_dev.begin)
     th_1.start()
@@ -21,10 +19,10 @@ def main():
         try:
             iot_dev.pal_param = fall_dev.stat_counter.value
 
-            logging.info(u'检测状态:'+iot_dev.pal_param)
-
+            print(u'检测状态:'+str(iot_dev.pal_param))
+            print('检测状态:', fall_dev.get_statement())
         except Exception as e:
-            logging.warning(repr(e)+'undetected')
+            print(repr(e)+'undetected')
 
         time.sleep(1)
         if not th_1.is_alive() and not th_2.is_alive():
